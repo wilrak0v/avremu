@@ -12,7 +12,7 @@
 typedef struct {
     uint16_t flash[FLASH_SIZE];
     uint8_t ram[RAM_SIZE];
-    uint16_t pc;
+    int16_t pc;
     uint16_t sp;
 } Atmega328p;
 

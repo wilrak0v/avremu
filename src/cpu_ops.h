@@ -19,6 +19,8 @@ void decode_ldi(uint16_t opcode, Atmega328p *mcu);
 void decode_add(uint16_t opcode, Atmega328p *mcu);
 void decode_rjmp(uint16_t opcode, Atmega328p *mcu);
 void decode_cp(uint16_t opcode, Atmega328p *mcu);
+void decode_breq(uint16_t opcode, Atmega328p *mcu);
+void decode_brne(uint16_t opcode, Atmega328p *mcu);
 void dump_state(Atmega328p *mcu);
 
 #endif
