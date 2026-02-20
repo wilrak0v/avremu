@@ -2,7 +2,6 @@
 #define CPU_OPS_H
 
 #include <stdint.h>
-#include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,6 +16,7 @@
 
 void decode_ldi(uint16_t opcode, Atmega328p *mcu);
 void decode_add(uint16_t opcode, Atmega328p *mcu);
+void decode_rjmp(uint16_t opcode, Atmega328p *mcu);
 void dump_state(Atmega328p *mcu);
 
 #endif

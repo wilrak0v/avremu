@@ -49,7 +49,15 @@ void decode_add(uint16_t opcode, Atmega328p *mcu)
     printf("ADD R%d, R%d | Nouveau contenu de R%d : %d\n", d, r, d, mcu->ram[d]);
 }
 
+void decode_rjmp(uint16_t opcode, Atmega328p *mcu)
+{
+    // RJMP => PC + k + 1
+    // 1100 kkkk kkkk kkkk
+    int16_t k = (int16_t)(opcode << 4) >> 4;
+    mcu->pc += k;
+}
+
 void dump_state(Atmega328p *mcu)
 {
-    printf("R16: %d ; R17: %d ; SREG: 0x%02X\n", mcu->ram[16], mcu->ram[17], mcu->ram[SREG_ADDR]);
+    printf("R16: %d ; R17: %d ; SREG: 0x%02X ; PC: %d\n", mcu->ram[16], mcu->ram[17], mcu->ram[SREG_ADDR], mcu->pc);
 }
