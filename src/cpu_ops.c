@@ -57,6 +57,31 @@ void decode_rjmp(uint16_t opcode, Atmega328p *mcu)
     mcu->pc += k;
 }
 
+void decode_cp(uint16_t opcode, Atmega328p *mcu)
+{
+    // 0011 dddd rrrr 
+    uint16_t d = (opcode & 0x01F0) >> 4;
+    uint16_t r = (opcode & 0x000F) | ((opcode & 0x0200) >> 5);
+    printf("CP R%d, R%d\n", d, r);
+    uint8_t result = mcu->ram[d] - mcu->ram[r];
+    d = (uint16_t)mcu->ram[d];
+    r = (uint16_t)mcu->ram[r];
+
+    set_sreg_bit(mcu, BIT_Z, (result == 0));
+
+    set_sreg_bit(mcu, BIT_N, (result & 0x80) != 0);
+
+    set_sreg_bit(mcu, BIT_C, (r > d));
+
+    int v = ((d & 0x80) && !(r & 0x80) && !(result & 0x80)) || (!(d & 0x80) && (r & 0x80) && (result & 0x80));
+    set_sreg_bit(mcu, BIT_V, v);
+
+    int n = (result & 0x80) != 0;
+    set_sreg_bit(mcu, BIT_S, n ^ v);
+
+    int h = (!(d & 0x80) && (r & 0x08)) || ((r & 0x08) && (result & 0x80)) || (!(d & 0x08) && (result & 0x08)); 
+    set_sreg_bit(mcu, BIT_H, h);
+}
 void dump_state(Atmega328p *mcu)
 {
     printf("R16: %d ; R17: %d ; SREG: 0x%02X ; PC: %d\n", mcu->ram[16], mcu->ram[17], mcu->ram[SREG_ADDR], mcu->pc);

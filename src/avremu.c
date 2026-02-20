@@ -69,6 +69,9 @@ void decode_instruction(uint16_t opcode, Atmega328p *mcu)
         decode_add(opcode, mcu);
     else if ((opcode & 0xF000) == 0xC000)
         decode_rjmp(opcode, mcu);
+    else if ((opcode & 0xFC00) == 0x1400)
+        decode_cp(opcode, mcu);
+    else if (opcode == 0x0000) ;
     else
         printf("Error: unknow instruction at %04x : %04x\n", mcu->pc, opcode);
 }
