@@ -110,7 +110,7 @@ void decode_brne(uint16_t opcode, Atmega328p *mcu)
     if (k & 0x40)
         k -= 128;
     if (get_sreg_bit(mcu, BIT_Z) == 0)
-        mcu->pc = mcu->pc + k - 1;
+        mcu->pc = mcu->pc + k;
     printf("BRNE %d\n", k);
 }
 
